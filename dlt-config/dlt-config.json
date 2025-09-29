@@ -1,0 +1,16 @@
+{
+  "name": "crypto-risk-dlt",
+  "catalog": "crypto",
+  "target": "core",
+  "storage": "dbfs:/pipelines/crypto_risk",
+  "libraries": [
+    { "notebook": { "path": "/Repos/crypto-risk-monitor-databricks/notebooks/02_dlt_pipeline.py" } }
+  ],
+  "continuous": false,
+  "photon": true,
+  "channel": "CURRENT",
+  "edition": "CORE",
+  "configuration": {
+    "landing_path": "/Volumes/crypto/core/landing/markets"
+  }
+}
