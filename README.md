@@ -4,6 +4,11 @@ Live, governed lakehouse pipeline that ingests crypto market data, curates it in
 
 This repository is a compact, reproducible example intended to showcase practical streaming data engineering and lightweight ML on Databricks Free Edition.
 
+![Crypto Dashboard](images/crypto-dashboard.JPG)
+
+
+
+
 ## Table of contents
 
 - [Features](#features)
@@ -14,8 +19,7 @@ This repository is a compact, reproducible example intended to showcase practica
 - [Configuration](#configuration)
 - [Validation & quick checks](#validation--quick-checks)
 - [Troubleshooting & notes](#troubleshooting--notes)
-- [Contributing](#contributing)
-- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
@@ -139,6 +143,8 @@ Pipeline details:
   - Build 5-minute windowed aggregates (price_avg, price_vol, min/max, vol_sum, etc.)
   - Use a shorter watermark (≈2 minutes) so windows emit in a timely manner for monitoring and ML
 
+  ![DLT Streaming](images/DLT-streaming.JPG)
+
 3) `03_train_iforest.py` — model training
 
 - Purpose: compute features from Gold and train an IsolationForest; log runs to MLflow and (optionally) register the model to Unity Catalog Models.
@@ -158,6 +164,11 @@ Pipeline details:
   4. Score with `decision_function` and `predict()`.
   5. MERGE results into `crypto.core.anomalies` using composite key `(asset, window_end)` to ensure idempotency.
 - Schedule: every 10 minutes (Databricks Job recommended).
+
+5) Dashboard — create a Databricks SQL dashboard using the example queries in `sql/dashboard.sql`
+
+![Crypto Dashboard](images/crypto-dashboard.JPG)
+
 
 Notes
 
@@ -202,7 +213,7 @@ Common fixes
 - Schema evolution failures: inspect `_rescued_data` fields on Bronze and update expectation rules in `02_dlt_pipeline.py`.
 
 
-## Authors / Contact
+## Contact
 
 - `abhayvaidian@gmail.com`
 
