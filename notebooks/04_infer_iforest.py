@@ -117,7 +117,7 @@ if model_version is None:
 # ----------------------------
 # Score
 # ----------------------------
-X = pdf[FEATURES].to_numpy()
+X = pdf[FEATURES].astype(float)
 scores = model.decision_function(X)         # higher = more normal
 labels = model.predict(X)                   # -1 anomaly, 1 normal
 is_anom = (labels == -1).astype(int)
