@@ -109,12 +109,12 @@ with mlflow.start_run(run_name="iforest_train"):
         "rows_total": int(len(pdf)),
     })
 
-    train_scores = model.decision_function(X_train.to_numpy())
+    train_scores = model.decision_function(X_train)
     mlflow.log_metric("train_score_mean", float(np.mean(train_scores)))
     mlflow.log_metric("train_score_std",  float(np.std(train_scores)))
 
     if X_hold is not None and len(X_hold) > 0:
-        hold_scores = model.decision_function(X_hold.to_numpy())
+        hold_scores = model.decision_function(X_hold)
         mlflow.log_metric("hold_rows", int(len(X_hold)))
         mlflow.log_metric("hold_score_mean", float(np.mean(hold_scores)))
         mlflow.log_metric("hold_score_std",  float(np.std(hold_scores)))
