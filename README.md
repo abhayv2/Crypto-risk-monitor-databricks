@@ -4,7 +4,7 @@ Live, governed lakehouse pipeline that ingests crypto market data, curates it in
 
 This repository is a compact, reproducible example intended to showcase practical streaming data engineering and lightweight ML on Databricks Free Edition.
 
-![Crypto Dashboard](images/crypto-dashboard.JPG)
+![Jobs and Pipeline](images/jobs-and-pipeline.JPG)
 
 
 
@@ -145,6 +145,8 @@ Pipeline details:
 
   ![DLT Streaming](images/DLT-streaming.JPG)
 
+
+
 3) `03_train_iforest.py` — model training
 
 - Purpose: compute features from Gold and train an IsolationForest; log runs to MLflow and (optionally) register the model to Unity Catalog Models.
@@ -168,6 +170,7 @@ Pipeline details:
 5) Dashboard — create a Databricks SQL dashboard using the example queries in `sql/dashboard.sql`
 
 ![Crypto Dashboard](images/crypto-dashboard.JPG)
+
 
 
 Notes
