@@ -1,6 +1,6 @@
 # Crypto Streaming Risk Monitor (Databricks Free Edition)
 
-Live, governed lakehouse pipeline that ingests crypto market data, curates it into Delta Bronze / Silver / Gold using Databricks Lakehouse patterns and DLT, trains an Isolation Forest with MLflow (optionally registered to Unity Catalog Models), performs idempotent batch inference (Delta MERGE), and surfaces results in Databricks SQL dashboards.
+Live, governed lakehouse pipeline that ingests crypto market data, curates it into Delta Bronze / Silver / Gold using Databricks Lakehouse patterns and DLT, trains an Isolation Forest with MLflow and registers it to Unity Catalog Models, performs idempotent batch inference (Delta MERGE), and surfaces results in Databricks SQL dashboards.
 
 This repository is a compact, reproducible example intended to showcase practical streaming data engineering and lightweight ML on Databricks Free Edition.
 
@@ -38,36 +38,36 @@ ASCII overview:
                  |  CoinGecko API     |
                  +----------+---------+
                             |
-                (01_ingest_prices.py)   writes JSONL
+                (01_ingest_prices.py)   writes JSON files
                             v
-      UC Volume: /Volumes/crypto/core/landing/markets (or workspace volume)
+        UC Volume: /Volumes/crypto/core/landing/markets 
                             |
                    (DLT Auto Loader)
                             v
         BRONZE   crypto.core.prices_bronze
         - raw JSON, schema evolve, _rescued, load_ts
-                |
-                | parse / type / quality checks
-                v
+                            |
+                            | parse / type / quality checks
+                            v
         SILVER   crypto.core.prices_silver
         - typed, event_ts/ingest_ts parsed
         - watermark + dropDuplicates(event_key)  <-- streaming-safe idempotency
-                |
-                | 5-min windows (append after watermark)
-                v
+                            |
+                            | 5-min windows (append after watermark)
+                            v
         GOLD     crypto.core.metrics_gold
         - price_avg, price_vol (sample std), price_min/max, vol_sum, ret_window
-                |
-                | batch-only feature (ret_prev) + MLflow train
-                v
+                            |
+                            | batch-only feature (ret_prev) + MLflow train
+                            v
         MODEL    UC Models: crypto.core.crypto_anomaly_iforest  (alias: champion)
-                |
-                | batch inference (ret_prev), decision_function + MERGE
-                v
+                            |
+                            | batch inference (ret_prev), decision_function + MERGE
+                            v
         TABLE    crypto.core.anomalies
         - anomaly_score, is_anomaly, model_version, latency
-                |
-                +--> Databricks SQL dashboard
+                            |
+                            +--> Databricks SQL dashboard
 
 ## Project layout
 
@@ -75,7 +75,7 @@ Top-level files and folders:
 
 ```
 notebooks/
-  01_ingest_prices.py          # API → UC volume (JSONL)
+  01_ingest_prices.py          # API → UC volume (JSON files)
   02_dlt_pipeline.py           # DLT Bronze/Silver/Gold (watermarks + expectations)
   03_train_iforest.py          # MLflow train + UC model registration
   04_infer_iforest.py          # Batch inference + MERGE upsert (idempotent)
@@ -91,7 +91,7 @@ README.md
 
 Prerequisites
 
-- A Databricks workspace (Free Edition can work for most demos, but features like Unity Catalog may be limited depending on your account).
+- A Databricks workspace (Free Edition).
 - A Databricks cluster or Serverless SQL warehouse with a Spark runtime that supports Delta and DLT.
 - Python 3.8+ (for local scripts / dev). The examples use scikit-learn and MLflow for model training.
 
