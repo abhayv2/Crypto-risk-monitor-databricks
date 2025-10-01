@@ -213,7 +213,7 @@ SELECT * FROM crypto.core.anomalies ORDER BY scored_at DESC LIMIT 100;
 Common fixes
 
 - Permission errors: ensure the cluster service principal / user has access to the target catalog/schema and volumes.
-- Schema evolution failures: inspect `_rescued_data` fields on Bronze and update expectation rules in `02_dlt_pipeline.py`.
+- Schema evolution failures: inspect `_rescued` fields on Bronze and update expectation rules in `02_dlt_pipeline.py`.
 
 
 ## Contact
